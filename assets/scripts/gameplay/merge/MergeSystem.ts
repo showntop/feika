@@ -3,8 +3,8 @@
  * 负责合成盘管理、物品合成逻辑
  */
 
-import { EventManager, GameEvents } from '@core/EventManager';
-import { MergeItem, Generator, ItemConfig, ItemType } from '@models/Item';
+import { EventManager, GameEvents } from '../../core/EventManager';
+import { MergeItem, Generator, ItemConfig, ItemType } from '../../models/Item';
 
 /**
  * 网格位置
@@ -481,6 +481,34 @@ export class MergeSystem {
                 cooldownRemaining: g.getCooldownRemaining()
             }))
         };
+    }
+
+    /**
+     * 加载物品配置
+     */
+    public loadItemConfigs(itemConfigs: any[]): void {
+        console.log('[MergeSystem] 加载物品配置...');
+        // 物品配置已通过模型直接加载，这里主要用于验证和扩展
+        // 可以在此添加物品到初始盘面等操作
+    }
+
+    /**
+     * 加载生成器配置
+     */
+    public loadGeneratorConfigs(generatorConfigs: any[]): void {
+        console.log('[MergeSystem] 加载生成器配置...');
+        this.generators = generatorConfigs.map(config => {
+            const generator = new Generator({
+                id: config.id,
+                name: config.name,
+                description: config.description,
+                unlockChapter: config.unlockChapter,
+                unlockConditions: config.unlockConditions,
+                production: config.production
+            });
+            return generator;
+        });
+        console.log(`[MergeSystem] 已加载 ${this.generators.length} 个生成器`);
     }
 }
 

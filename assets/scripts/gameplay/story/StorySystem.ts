@@ -3,7 +3,7 @@
  * 负责章节管理、剧情事件、对话系统
  */
 
-import { EventManager, GameEvents } from '@core/EventManager';
+import { EventManager, GameEvents } from '../../core/EventManager';
 
 /**
  * 剧情类型
@@ -30,7 +30,7 @@ export interface DialogueLine {
  * 剧情事件需求
  */
 export interface EventRequirement {
-    type: 'cash' | 'reputation' | 'connections' | 'item' | 'chapter_complete';
+    type: 'cash' | 'reputation' | 'connections' | 'item' | 'chapter_complete' | 'event_complete';
     value: any;
     operator?: '>=' | '<=' | '==' | '>' | '<';
 }
@@ -487,6 +487,18 @@ export class StorySystem {
             chapterProgress: this.currentChapter ?
                 this.completedEvents.size / this.currentChapter.events.length : 0
         };
+    }
+
+    /**
+     * 加载章节配置
+     */
+    public loadChapterConfigs(chapterConfigs: any[]): void {
+        console.log('[StorySystem] 加载章节配置...');
+        this.chapters.clear();
+        chapterConfigs.forEach(chapter => {
+            this.chapters.set(chapter.id, chapter);
+        });
+        console.log(`[StorySystem] 已加载 ${chapterConfigs.length} 个章节配置`);
     }
 }
 

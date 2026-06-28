@@ -3,8 +3,8 @@
  * 负责订单管理、店铺升级、顾客管理
  */
 
-import { EventManager, GameEvents } from '@core/EventManager';
-import { Order, CustomerType, OrderConfig, ShopUpgradeConfig } from '@models/Order';
+import { EventManager, GameEvents } from '../../core/EventManager';
+import { Order, CustomerType, OrderConfig, ShopUpgradeConfig } from '../../models/Order';
 
 /**
  * 经营系统配置
@@ -13,6 +13,8 @@ export interface BusinessSystemConfig {
     maxOrders: number;              // 最大订单数
     orderRefreshInterval: number;   // 订单刷新间隔（秒）
     initialShopLevel: number;       // 初始店铺等级
+    availableOrders?: OrderConfig[];      // 可用的订单配置
+    shopUpgrades?: ShopUpgradeConfig[];   // 店铺升级配置
 }
 
 /**
@@ -269,29 +271,30 @@ export class BusinessSystem {
     /**
      * 完成订单
      */
-    public completeOrder(orderId: string, checkItemCallback: (itemId: string, level: number, count: number) => boolean): boolean {
+    public completeOrder(orderId: string, checkItemCallback: (itemId: string, level: number, count: number) => boolean, consumeItemCallback: (itemId: string, level: number, count: number) => boolean): boolean {
         const order = this.currentOrders.find(o => o.getId() === orderId);
         if (!order) {
             return false;
         }
 
-        // 检查是否可以完成
-        if (!order.canComplete(checkItemCallback)) {
+        // 完成订单（会检查和消耗物品）
+        const reward = order.complete(consumeItemCallback);
+        if (!reward) {
             return false;
         }
 
-        // 计算奖励
-        const reward = order.calculateReward(this.shopLevel);
+        // 计算实际奖励（考虑店铺等级加成）
+        const actualReward = order.calculateReward(this.shopLevel);
 
         // 发放奖励
-        this.addCash(reward.cash);
-        this.addReputation(reward.reputation);
-        this.addConnections(reward.connections);
+        this.addCash(actualReward.cash);
+        this.addReputation(actualReward.reputation);
+        this.addConnections(actualReward.connections);
 
         // 触发订单完成事件
         EventManager.getInstance().emit(GameEvents.ORDER_COMPLETE, {
             order,
-            reward
+            reward: actualReward
         });
 
         // 移除订单
@@ -357,35 +360,66 @@ export class BusinessSystem {
             }
         };
 
-        // 创建升级对象
-        const upgrade = {
-            getConfig: () => upgradeConfig,
-            canUpgrade: () => upgradeConfig.costs.items ? true : true,
-            upgrade: () => {
-                // 消耗现金
-                if (!this.consumeCash(upgradeConfig.costs.cash)) {
-                    return false;
-                }
-
-                // 执行升级
-                this.shopLevel = nextLevel;
-
-                // 触发升级事件
-                EventManager.getInstance().emit(GameEvents.SHOP_UPGRADE, {
-                    oldLevel: nextLevel - 1,
-                    newLevel: nextLevel,
-                    rewards: upgradeConfig.rewards
-                });
-
-                return true;
-            }
-        };
-
-        if (!upgrade.canUpgrade()) {
+        // 检查现金
+        if (!checkCallback('cash', upgradeConfig.costs.cash)) {
+            console.log(`[BusinessSystem] 现金不足，需要 ${upgradeConfig.costs.cash}，当前 ${this.cash}`);
             return false;
         }
 
-        return upgrade.upgrade();
+        // 检查物品消耗
+        if (upgradeConfig.costs.items) {
+            for (const item of upgradeConfig.costs.items) {
+                if (!checkCallback('item', item)) {
+                    console.log(`[BusinessSystem] 物品不足: ${item.itemId}`);
+                    return false;
+                }
+            }
+        }
+
+        // 检查口碑要求
+        if (upgradeConfig.costs.reputation) {
+            if (!checkCallback('reputation', upgradeConfig.costs.reputation)) {
+                console.log(`[BusinessSystem] 口碑不足，需要 ${upgradeConfig.costs.reputation}，当前 ${this.reputation}`);
+                return false;
+            }
+        }
+
+        // 检查人脉要求
+        if (upgradeConfig.costs.connections) {
+            if (!checkCallback('connections', upgradeConfig.costs.connections)) {
+                console.log(`[BusinessSystem] 人脉不足，需要 ${upgradeConfig.costs.connections}，当前 ${this.connections}`);
+                return false;
+            }
+        }
+
+        // 消耗现金
+        if (!this.consumeCash(upgradeConfig.costs.cash)) {
+            console.log('[BusinessSystem] 消耗现金失败');
+            return false;
+        }
+
+        // 消耗物品
+        if (upgradeConfig.costs.items) {
+            for (const item of upgradeConfig.costs.items) {
+                if (!consumeResourceCallback('item', item)) {
+                    console.log(`[BusinessSystem] 消耗物品失败: ${item.itemId}`);
+                    return false;
+                }
+            }
+        }
+
+        // 执行升级
+        this.shopLevel = nextLevel;
+
+        // 触发升级事件
+        EventManager.getInstance().emit(GameEvents.SHOP_UPGRADE, {
+            oldLevel: nextLevel - 1,
+            newLevel: nextLevel,
+            upgradeConfig
+        });
+
+        console.log(`[BusinessSystem] 店铺升级成功: ${nextLevel - 1} -> ${nextLevel}`);
+        return true;
     }
 
     /**
@@ -460,6 +494,17 @@ export class BusinessSystem {
             canUpgrade: this.canUpgradeShop(),
             nextUpgradeLevel: this.getNextUpgradeConfig()?.level || null
         };
+    }
+
+    /**
+     * 加载订单配置
+     */
+    public loadOrderConfigs(orderConfigs: any): void {
+        console.log('[BusinessSystem] 加载订单配置...');
+        this.config.availableOrders = orderConfigs.orders || [];
+        this.config.shopUpgrades = orderConfigs.shopUpgrades || [];
+        console.log(`[BusinessSystem] 已加载 ${this.config.availableOrders?.length || 0} 个订单配置`);
+        console.log(`[BusinessSystem] 已加载 ${this.config.shopUpgrades?.length || 0} 个店铺升级配置`);
     }
 }
 

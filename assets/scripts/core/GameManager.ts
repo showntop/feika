@@ -4,9 +4,9 @@
  */
 
 import { EventManager, GameEvents } from './EventManager';
-import { MergeSystem } from '@gameplay/merge/MergeSystem';
-import { BusinessSystem } from '@gameplay/business/BusinessSystem';
-import { StorySystem, EventRequirement, EventReward } from '@gameplay/story/StorySystem';
+import { MergeSystem } from '../gameplay/merge/MergeSystem';
+import { BusinessSystem } from '../gameplay/business/BusinessSystem';
+import { StorySystem, EventRequirement, EventReward } from '../gameplay/story/StorySystem';
 
 /**
  * 游戏状态
@@ -235,18 +235,56 @@ export class GameManager {
      */
     private async loadConfigurations(): Promise<void> {
         try {
-            // 这里应该加载实际的配置文件
-            // 目前先使用硬编码的配置
             console.log('[GameManager] 加载配置文件...');
 
-            // TODO: 实际实现时从文件加载配置
-            // const gameConfig = await this.loadJson('config/game_config.json');
-            // const itemsConfig = await this.loadJson('config/items.json');
-            // const chaptersConfig = await this.loadJson('config/chapters.json');
+            // 加载物品配置
+            const itemsConfig = await this.loadJson('../config/items.json');
+            if (itemsConfig && itemsConfig.items) {
+                this.mergeSystem.loadItemConfigs(itemsConfig.items);
+                console.log(`[GameManager] 已加载 ${itemsConfig.items.length} 个物品配置`);
+            }
+
+            // 加载生成器配置
+            if (itemsConfig && itemsConfig.generators) {
+                this.mergeSystem.loadGeneratorConfigs(itemsConfig.generators);
+                console.log(`[GameManager] 已加载 ${itemsConfig.generators.length} 个生成器配置`);
+            }
+
+            // 加载章节配置
+            const chaptersConfig = await this.loadJson('../config/chapters.json');
+            if (chaptersConfig && chaptersConfig.chapters) {
+                this.storySystem.loadChapterConfigs(chaptersConfig.chapters);
+                console.log(`[GameManager] 已加载 ${chaptersConfig.chapters.length} 个章节配置`);
+            }
+
+            // 加载订单配置
+            const ordersConfig = await this.loadJson('../config/orders_chapter1.json');
+            if (ordersConfig) {
+                this.businessSystem.loadOrderConfigs(ordersConfig);
+                console.log(`[GameManager] 已加载订单配置`);
+            }
 
             console.log('[GameManager] 配置文件加载完成');
         } catch (error) {
             console.error('[GameManager] 配置文件加载失败:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * 加载JSON文件
+     */
+    private async loadJson(filePath: string): Promise<any> {
+        try {
+            const fs = require('fs');
+            const path = require('path');
+            // 使用process.cwd()获取项目根目录，然后加载assets/config
+            const configPath = path.resolve(process.cwd(), 'assets/config', filePath.replace('../config/', ''));
+            const fileContent = fs.readFileSync(configPath, 'utf-8');
+            return JSON.parse(fileContent);
+        } catch (error) {
+            console.error(`[GameManager] 加载JSON文件失败: ${filePath}`, error);
+            return null;
         }
     }
 
@@ -362,6 +400,9 @@ export class GameManager {
                 break;
             case 'chapter_complete':
                 playerValue = this.playerData.completedChapters.includes(value as string);
+                break;
+            case 'event_complete':
+                playerValue = this.storySystem.isEventCompleted(value as string);
                 break;
             default:
                 return true;
