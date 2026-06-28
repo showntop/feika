@@ -2,14 +2,14 @@
   "chapters": [
     {
       "id": "chapter_1",
-      "title": "重回2010，家里欠债",
-      "description": "你从2026年醒来，发现自己回到了2010年。父亲病倒，家里需要钱，亲戚催债...",
+      "title": "三天赚出第一桶金",
+      "description": "你从2026年醒来，发现自己回到了2010年。亲戚逼着卖老房子，父亲住院等着交押金...",
       "year": 2010,
       "chapterNumber": 1,
-      "mainGoal": "3天内凑齐5000元，避免家里卖老房子",
+      "mainGoal": "3天内赚出第一桶金，保住老房子",
       "goalTarget": {
-        "type": "cash",
-        "value": 5000
+        "type": "complete_events",
+        "value": 7
       },
       "scenes": ["old_house", "street_corner"],
       "events": [
@@ -49,8 +49,8 @@
         {
           "id": "event_ch1_father_illness",
           "type": "main",
-          "title": "父亲病倒",
-          "description": "父亲病倒，家里需要医药费",
+          "title": "先交住院押金",
+          "description": "父亲病倒，家里需要先交一笔住院押金",
           "dialogue": [
             {
               "speaker": "旁白",
@@ -59,12 +59,12 @@
             },
             {
               "speaker": "医生",
-              "text": "手术费加上住院费，大概需要3000元...",
+              "text": "先交一笔押金，后面的费用再想办法...",
               "duration": 2000
             },
             {
               "speaker": "主角",
-              "text": "3000元...家里现在能凑出多少？",
+              "text": "先把押金交上，后面的我来想办法。",
               "emotion": "worried",
               "duration": 2000
             },
@@ -77,9 +77,12 @@
           ],
           "requirements": [
             {
-              "type": "cash",
-              "value": 100,
-              "operator": ">="
+              "type": "item",
+              "value": {
+                "itemId": "money_2",
+                "level": 2,
+                "count": 1
+              }
             }
           ],
           "rewards": {
@@ -128,7 +131,7 @@
           ],
           "requirements": [
             {
-              "type": "chapter_complete",
+              "type": "event_complete",
               "value": "event_ch1_father_illness"
             }
           ],
@@ -169,9 +172,16 @@
           ],
           "requirements": [
             {
-              "type": "cash",
-              "value": 100,
-              "operator": ">="
+              "type": "event_complete",
+              "value": "event_ch1_relative_debt"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_1",
+                "level": 1,
+                "count": 2
+              }
             }
           ],
           "rewards": {
@@ -217,9 +227,16 @@
           ],
           "requirements": [
             {
-              "type": "cash",
-              "value": 200,
-              "operator": ">="
+              "type": "event_complete",
+              "value": "event_ch1_first_business"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_2",
+                "level": 2,
+                "count": 1
+              }
             }
           ],
           "rewards": {
@@ -230,19 +247,79 @@
           "priority": 6
         },
         {
+          "id": "event_ch1_regular_customers",
+          "type": "event",
+          "title": "老客户带人排队",
+          "description": "老客户认可你的货，带来一批新顾客",
+          "dialogue": [
+            {
+              "speaker": "老客户",
+              "text": "你这货实在，我带几个朋友过来看看。",
+              "emotion": "friendly",
+              "duration": 2000
+            },
+            {
+              "speaker": "旁白",
+              "text": "小摊前第一次排起了队。",
+              "duration": 2000
+            },
+            {
+              "speaker": "势利亲戚",
+              "text": "怎么会有这么多人买他的东西？",
+              "emotion": "shocked",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "生意不是靠嘴说，是靠人一单一单认出来的。",
+              "emotion": "calm",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch1_first_earnings"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "relationship_2",
+                "level": 2,
+                "count": 1
+              }
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_2",
+                "level": 2,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 200,
+            "reputation": 3,
+            "connections": 1
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
           "id": "event_ch1_debt_payment",
           "type": "main",
-          "title": "第一笔还款",
-          "description": "终于凑齐了第一笔还款",
+          "title": "第一桶金打脸",
+          "description": "合成出第一桶金，当场保住老房子",
           "dialogue": [
             {
               "speaker": "旁白",
-              "text": "经过3天的努力，你终于凑齐了5000元...",
+              "text": "第三天夜里，你终于攒出了真正的第一桶金...",
               "duration": 2500
             },
             {
               "speaker": "主角",
-              "text": "这是5000元，还给你们！",
+              "text": "这是第一桶金。债我还，房子我们不卖。",
               "emotion": "proud",
               "duration": 2000
             },
@@ -254,7 +331,7 @@
             },
             {
               "speaker": "主角",
-              "text": "我说过3天内会还上，现在做到了！",
+              "text": "我说过三天内会还上，现在做到了。",
               "emotion": "satisfied",
               "duration": 2500
             },
@@ -272,9 +349,16 @@
           ],
           "requirements": [
             {
-              "type": "cash",
-              "value": 5000,
-              "operator": ">="
+              "type": "event_complete",
+              "value": "event_ch1_regular_customers"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "money_5",
+                "level": 5,
+                "count": 1
+              }
             }
           ],
           "rewards": {

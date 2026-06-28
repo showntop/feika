@@ -167,7 +167,7 @@ export class Order {
      * 完成订单
      */
     public complete(consumeItemCallback: (itemId: string, level: number, count: number) => boolean): OrderReward | null {
-        if (!this.canComplete(consumeItemCallback)) {
+        if (this.isCompleted || this.expired) {
             return null;
         }
 

@@ -185,6 +185,13 @@ export class StoryEvent {
     }
 
     /**
+     * 获取事件需求
+     */
+    public getRequirements(): EventRequirement[] {
+        return this.config.requirements || [];
+    }
+
+    /**
      * 获取可触发的后续事件
      */
     public getNextEvents(): string[] {

@@ -277,7 +277,11 @@ export class BusinessSystem {
             return false;
         }
 
-        // 完成订单（会检查和消耗物品）
+        if (!order.canComplete(checkItemCallback)) {
+            return false;
+        }
+
+        // 完成订单（消耗物品）
         const reward = order.complete(consumeItemCallback);
         if (!reward) {
             return false;
@@ -501,10 +505,12 @@ export class BusinessSystem {
      */
     public loadOrderConfigs(orderConfigs: any): void {
         console.log('[BusinessSystem] 加载订单配置...');
-        this.config.availableOrders = orderConfigs.orders || [];
-        this.config.shopUpgrades = orderConfigs.shopUpgrades || [];
-        console.log(`[BusinessSystem] 已加载 ${this.config.availableOrders?.length || 0} 个订单配置`);
-        console.log(`[BusinessSystem] 已加载 ${this.config.shopUpgrades?.length || 0} 个店铺升级配置`);
+        this.orderConfigs = orderConfigs.orders || [];
+        this.upgradeConfigs = orderConfigs.shop_upgrades || orderConfigs.shopUpgrades || [];
+        this.config.availableOrders = this.orderConfigs;
+        this.config.shopUpgrades = this.upgradeConfigs;
+        console.log(`[BusinessSystem] 已加载 ${this.orderConfigs.length} 个订单配置`);
+        console.log(`[BusinessSystem] 已加载 ${this.upgradeConfigs.length} 个店铺升级配置`);
     }
 }
 

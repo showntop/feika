@@ -398,12 +398,12 @@ export class GameManager {
             case 'connections':
                 playerValue = this.businessSystem.getConnections();
                 break;
+            case 'item':
+                return this.checkItemRequirement(value);
             case 'chapter_complete':
-                playerValue = this.playerData.completedChapters.includes(value as string);
-                break;
+                return this.playerData.completedChapters.includes(value as string);
             case 'event_complete':
-                playerValue = this.storySystem.isEventCompleted(value as string);
-                break;
+                return this.storySystem.isEventCompleted(value as string);
             default:
                 return true;
         }
@@ -445,6 +445,83 @@ export class GameManager {
             default:
                 return false;
         }
+    }
+
+    /**
+     * 检查剧情物品需求
+     */
+    private checkItemRequirement(value: any): boolean {
+        const itemId = value?.itemId;
+        const level = value?.level || 1;
+        const count = value?.count || 1;
+
+        if (!itemId) {
+            return false;
+        }
+
+        const matchingItems = this.mergeSystem.getAllItems().filter(item =>
+            item.getId() === itemId &&
+            item.getLevel() === level
+        );
+
+        return matchingItems.length >= count;
+    }
+
+    /**
+     * 消耗剧情物品需求
+     */
+    private consumeItemRequirement(value: any): boolean {
+        const itemId = value?.itemId;
+        const level = value?.level || 1;
+        const count = value?.count || 1;
+
+        if (!itemId) {
+            return false;
+        }
+
+        return this.mergeSystem.consumeItem(itemId, level, count);
+    }
+
+    /**
+     * 完成当前剧情事件，消耗物品需求并发放奖励
+     */
+    public completeCurrentStoryEvent(): boolean {
+        const activeEvent = this.storySystem.getActiveEvent();
+        if (!activeEvent) {
+            return false;
+        }
+
+        const itemRequirements = activeEvent
+            .getRequirements()
+            .filter(req => req.type === 'item');
+
+        if (!itemRequirements.every(req => this.checkItemRequirement(req.value))) {
+            return false;
+        }
+
+        for (const requirement of itemRequirements) {
+            if (!this.consumeItemRequirement(requirement.value)) {
+                return false;
+            }
+        }
+
+        return this.storySystem.completeCurrentEvent((reward) => this.applyStoryReward(reward));
+    }
+
+    /**
+     * 发放剧情奖励
+     */
+    private applyStoryReward(reward: EventReward): void {
+        if (reward.cash) {
+            this.businessSystem.addCash(reward.cash);
+        }
+        if (reward.reputation) {
+            this.businessSystem.addReputation(reward.reputation);
+        }
+        if (reward.connections) {
+            this.businessSystem.addConnections(reward.connections);
+        }
+        // unlockChapter / unlockGenerator / items 先作为后续系统接入点保留。
     }
 
     /**

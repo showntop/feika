@@ -488,8 +488,8 @@ export class MergeSystem {
      */
     public loadItemConfigs(itemConfigs: any[]): void {
         console.log('[MergeSystem] 加载物品配置...');
-        // 物品配置已通过模型直接加载，这里主要用于验证和扩展
-        // 可以在此添加物品到初始盘面等操作
+        this.setItems(itemConfigs as ItemConfig[]);
+        console.log(`[MergeSystem] 已加载 ${itemConfigs.length} 个物品`);
     }
 
     /**
