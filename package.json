@@ -1,7 +1,7 @@
 {
   "name": "time-loop-2010",
   "version": "1.0.0",
-  "description": "重返2010：我的第一桶金 - 微信小游戏",
+  "description": "重返2010：我的第一桶金 - Cocos Creator游戏项目",
   "main": "index.js",
   "scripts": {
     "dev": "tsc --watch",
@@ -12,8 +12,7 @@
   },
   "keywords": [
     "game",
-    "wechat",
-    "minigame",
+    "cocos",
     "merge",
     "business"
   ],

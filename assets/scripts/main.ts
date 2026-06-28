@@ -176,7 +176,7 @@ export async function performanceTest(): Promise<void> {
     }
 }
 
-// 如果直接运行此文件
-if (require.main === module) {
+// 如果直接运行此文件 (仅Node.js环境)
+if (typeof require !== 'undefined' && require.main === module) {
     testGame().catch(console.error);
 }
