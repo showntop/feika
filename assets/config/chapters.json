@@ -1,0 +1,323 @@
+{
+  "chapters": [
+    {
+      "id": "chapter_1",
+      "title": "重回2010，家里欠债",
+      "description": "你从2026年醒来，发现自己回到了2010年。父亲病倒，家里需要钱，亲戚催债...",
+      "year": 2010,
+      "chapterNumber": 1,
+      "mainGoal": "3天内凑齐5000元，避免家里卖老房子",
+      "goalTarget": {
+        "type": "cash",
+        "value": 5000
+      },
+      "scenes": ["old_house", "street_corner"],
+      "events": [
+        {
+          "id": "event_ch1_wakeup",
+          "type": "main",
+          "title": "重返2010",
+          "description": "从2026年醒来，发现回到了2010年",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "2026年，35岁的你，事业受挫，负债累累...",
+              "duration": 3000
+            },
+            {
+              "speaker": "旁白",
+              "text": "一次意外后，你睁开眼，看到了熟悉又陌生的老房子...",
+              "duration": 3000
+            },
+            {
+              "speaker": "父亲",
+              "text": "孩子，你醒了？家里正好需要钱...",
+              "emotion": "worried",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "这是...2010年？我重生了！",
+              "emotion": "surprised",
+              "duration": 2000
+            }
+          ],
+          "requirements": [],
+          "triggerOnce": true,
+          "priority": 10
+        },
+        {
+          "id": "event_ch1_father_illness",
+          "type": "main",
+          "title": "父亲病倒",
+          "description": "父亲病倒，家里需要医药费",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "父亲突然病倒，被送进了医院...",
+              "duration": 2500
+            },
+            {
+              "speaker": "医生",
+              "text": "手术费加上住院费，大概需要3000元...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "3000元...家里现在能凑出多少？",
+              "emotion": "worried",
+              "duration": 2000
+            },
+            {
+              "speaker": "母亲",
+              "text": "家里现在只有不到500元...",
+              "emotion": "sad",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "cash",
+              "value": 100,
+              "operator": ">="
+            }
+          ],
+          "rewards": {
+            "connections": 1
+          },
+          "triggerOnce": true,
+          "priority": 8,
+          "nextEvents": ["event_ch1_relative_debt"]
+        },
+        {
+          "id": "event_ch1_relative_debt",
+          "type": "main",
+          "title": "亲戚催债",
+          "description": "亲戚上门催债，让还钱",
+          "dialogue": [
+            {
+              "speaker": "势利亲戚",
+              "text": "哟，听说你们家需要钱啊？那笔5000块的债，什么时候能还？",
+              "emotion": "arrogant",
+              "duration": 3000
+            },
+            {
+              "speaker": "势利亲戚",
+              "text": "别以为能拖着，实在不行就把这老房子卖了抵债吧！",
+              "emotion": "threatening",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "（心里想着：前世我们家就是这个时候卖了老房子...）",
+              "emotion": "angry",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "给我3天时间，我会还上这笔钱！",
+              "emotion": "determined",
+              "duration": 2000
+            },
+            {
+              "speaker": "势利亲戚",
+              "text": "3天？哈哈哈哈，就凭你？行啊，我等着看！",
+              "emotion": "mocking",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "chapter_complete",
+              "value": "event_ch1_father_illness"
+            }
+          ],
+          "rewards": {
+            "cash": 50
+          },
+          "triggerOnce": true,
+          "priority": 9
+        },
+        {
+          "id": "event_ch1_first_business",
+          "type": "event",
+          "title": "第一次摆摊",
+          "description": "在街边第一次摆摊卖东西",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "你想起前世，这个时候夜市经济刚开始火...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "我有前世记忆，知道什么能卖得好！",
+              "emotion": "confident",
+              "duration": 2000
+            },
+            {
+              "speaker": "旁白",
+              "text": "你翻出了家里的旧纸箱，准备了一些小商品...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "袜子、发卡、小玩具...先从这些开始吧！",
+              "emotion": "motivated",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "cash",
+              "value": 100,
+              "operator": ">="
+            }
+          ],
+          "rewards": {
+            "cash": 100
+          },
+          "triggerOnce": true,
+          "priority": 7
+        },
+        {
+          "id": "event_ch1_first_earnings",
+          "type": "event",
+          "title": "第一笔收入",
+          "description": "摆摊赚到了第一笔钱",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "傍晚，你在街边摆起了小摊...",
+              "duration": 2000
+            },
+            {
+              "speaker": "学生顾客",
+              "text": "这个发卡怎么卖？",
+              "emotion": "casual",
+              "duration": 1500
+            },
+            {
+              "speaker": "主角",
+              "text": "3块钱一个，5块钱两个！",
+              "emotion": "smiling",
+              "duration": 1500
+            },
+            {
+              "speaker": "旁白",
+              "text": "第一单！你心里充满了激动...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "第一天晚上就赚了200多！这个方向是对的！",
+              "emotion": "excited",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "cash",
+              "value": 200,
+              "operator": ">="
+            }
+          ],
+          "rewards": {
+            "cash": 200,
+            "reputation": 2
+          },
+          "triggerOnce": true,
+          "priority": 6
+        },
+        {
+          "id": "event_ch1_debt_payment",
+          "type": "main",
+          "title": "第一笔还款",
+          "description": "终于凑齐了第一笔还款",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "经过3天的努力，你终于凑齐了5000元...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "这是5000元，还给你们！",
+              "emotion": "proud",
+              "duration": 2000
+            },
+            {
+              "speaker": "势利亲戚",
+              "text": "你...你真的凑齐了？这么多钱...",
+              "emotion": "shocked",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "我说过3天内会还上，现在做到了！",
+              "emotion": "satisfied",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "亲戚第一次对你改变了态度...",
+              "duration": 2000
+            },
+            {
+              "speaker": "势利亲戚",
+              "text": "既然你这么能干，那我有渠道可以介绍给你...",
+              "emotion": "hesitant",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "cash",
+              "value": 5000,
+              "operator": ">="
+            }
+          ],
+          "rewards": {
+            "reputation": 5,
+            "connections": 2,
+            "unlockChapter": "chapter_2"
+          },
+          "triggerOnce": true,
+          "priority": 10,
+          "nextEvents": []
+        }
+      ],
+      "isFinalChapter": false
+    },
+    {
+      "id": "chapter_2",
+      "title": "夜市摆摊，赚第一桶金",
+      "description": "在夜市摆摊，赚取第一桶金，拿下黄金摊位",
+      "year": 2010,
+      "chapterNumber": 2,
+      "mainGoal": "在夜市赚到10000元，拿下黄金摊位",
+      "goalTarget": {
+        "type": "cash",
+        "value": 10000
+      },
+      "scenes": ["night_market"],
+      "events": [],
+      "isFinalChapter": false
+    },
+    {
+      "id": "chapter_3",
+      "title": "盘下门面，开第一家店",
+      "description": "攒够转让费，盘下商业街小门面",
+      "year": 2011,
+      "chapterNumber": 3,
+      "mainGoal": "攒够30000元，开第一家店",
+      "goalTarget": {
+        "type": "cash",
+        "value": 30000
+      },
+      "scenes": ["street_shop"],
+      "events": [],
+      "isFinalChapter": false
+    }
+  ]
+}

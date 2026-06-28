@@ -1,0 +1,32 @@
+{
+  "name": "time-loop-2010",
+  "version": "1.0.0",
+  "description": "重返2010：我的第一桶金 - 微信小游戏",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint assets/scripts/**/*.ts",
+    "format": "prettier --write assets/scripts/**/*.ts"
+  },
+  "keywords": [
+    "game",
+    "wechat",
+    "minigame",
+    "merge",
+    "business"
+  ],
+  "author": "Feica Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {}
+}
