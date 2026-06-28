@@ -13,7 +13,7 @@
     },
     {
       "id": "product_2",
-      "name": "小商品",
+      "name": "一袋小商品",
       "type": "product",
       "level": 2,
       "maxLevel": 5,
@@ -24,7 +24,7 @@
     },
     {
       "id": "product_3",
-      "name": "热卖商品",
+      "name": "夜市热卖款",
       "type": "product",
       "level": 3,
       "maxLevel": 5,
@@ -197,6 +197,12 @@
       "name": "老式手机",
       "description": "诺基亚老手机",
       "unlockChapter": 1,
+      "unlockConditions": [
+        {
+          "type": "story",
+          "value": "event_ch1_first_earnings"
+        }
+      ],
       "production": {
         "items": ["relationship_1"],
         "weights": [100],

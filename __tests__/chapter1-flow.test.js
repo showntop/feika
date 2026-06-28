@@ -44,6 +44,7 @@ describe('chapter 1 golden flow', () => {
     const storySystem = gameManager.getStorySystem();
 
     expect(storySystem.loadChapter('chapter_1', (req) => gameManager.checkRequirement(req))).toBe(true);
+    expect(mergeSystem.getGenerator('generator_old_phone')).toBeUndefined();
 
     triggerAndComplete(gameManager, 'event_ch1_wakeup');
 
@@ -53,14 +54,19 @@ describe('chapter 1 golden flow', () => {
 
     triggerAndComplete(gameManager, 'event_ch1_relative_debt');
 
+    triggerAndComplete(gameManager, 'event_ch1_mother_support');
+
     placeRequiredItem(mergeSystem, 'product_1', '散货', ItemType.PRODUCT, 1);
     placeRequiredItem(mergeSystem, 'product_1', '散货', ItemType.PRODUCT, 1);
     triggerAndComplete(gameManager, 'event_ch1_first_business');
     expect(mergeSystem.hasItem('product_1', 1)).toBe(false);
 
+    triggerAndComplete(gameManager, 'event_ch1_forecast_hot_sale');
+
     placeRequiredItem(mergeSystem, 'product_2', '小商品', ItemType.PRODUCT, 2);
     triggerAndComplete(gameManager, 'event_ch1_first_earnings');
     expect(mergeSystem.hasItem('product_2', 2)).toBe(false);
+    expect(mergeSystem.getGenerator('generator_old_phone')).toBeDefined();
 
     placeRequiredItem(mergeSystem, 'relationship_2', '老客户', ItemType.RELATIONSHIP, 2);
     placeRequiredItem(mergeSystem, 'product_2', '小商品', ItemType.PRODUCT, 2);

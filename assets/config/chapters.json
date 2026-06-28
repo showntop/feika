@@ -9,7 +9,7 @@
       "mainGoal": "3天内赚出第一桶金，保住老房子",
       "goalTarget": {
         "type": "complete_events",
-        "value": 7
+        "value": 9
       },
       "scenes": ["old_house", "street_corner"],
       "events": [
@@ -142,6 +142,44 @@
           "priority": 9
         },
         {
+          "id": "event_ch1_mother_support",
+          "type": "event",
+          "title": "母亲的信任",
+          "description": "母亲没有追问太多，只是把家里最后一点钱交给你",
+          "dialogue": [
+            {
+              "speaker": "母亲",
+              "text": "我不知道你哪来的主意，但妈信你一次。",
+              "emotion": "warm",
+              "duration": 2500
+            },
+            {
+              "speaker": "母亲",
+              "text": "别把自己逼太狠，家里还有我。",
+              "emotion": "gentle",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "这一次，我一定让这个家慢慢好起来。",
+              "emotion": "determined",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch1_relative_debt"
+            }
+          ],
+          "rewards": {
+            "cash": 50,
+            "reputation": 1
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
           "id": "event_ch1_first_business",
           "type": "event",
           "title": "第一次摆摊",
@@ -173,7 +211,7 @@
           "requirements": [
             {
               "type": "event_complete",
-              "value": "event_ch1_relative_debt"
+              "value": "event_ch1_mother_support"
             },
             {
               "type": "item",
@@ -189,6 +227,43 @@
           },
           "triggerOnce": true,
           "priority": 7
+        },
+        {
+          "id": "event_ch1_forecast_hot_sale",
+          "type": "event",
+          "title": "前世预知：今晚会爆卖",
+          "description": "你想起2010年世界杯期间，学生最爱买成套小饰品",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "街边小店的电视里，正播着世界杯新闻。",
+              "duration": 2200
+            },
+            {
+              "speaker": "主角",
+              "text": "我想起来了，今晚成套小饰品会特别好卖。",
+              "emotion": "focused",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "先把散货凑成一袋小商品，别零散卖。",
+              "emotion": "confident",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch1_first_business"
+            }
+          ],
+          "rewards": {
+            "cash": 50,
+            "specialEvent": "forecast_product_2_double_reward"
+          },
+          "triggerOnce": true,
+          "priority": 8
         },
         {
           "id": "event_ch1_first_earnings",
@@ -228,7 +303,7 @@
           "requirements": [
             {
               "type": "event_complete",
-              "value": "event_ch1_first_business"
+              "value": "event_ch1_forecast_hot_sale"
             },
             {
               "type": "item",
@@ -241,7 +316,8 @@
           ],
           "rewards": {
             "cash": 200,
-            "reputation": 2
+            "reputation": 2,
+            "unlockGenerator": "generator_old_phone"
           },
           "triggerOnce": true,
           "priority": 6

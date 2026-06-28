@@ -48,6 +48,7 @@ export class MergeSystem {
     // 状态
     private grid: (MergeItem | null)[][] = [];
     private generators: Generator[] = [];
+    private generatorConfigs: Map<string, any> = new Map();
     private items: Map<string, ItemConfig> = new Map();
     private currentEnergy: number = 40;
     private lastEnergyUpdateTime: number = Date.now();
@@ -73,6 +74,7 @@ export class MergeSystem {
         this.initGrid();
         this.currentEnergy = 40;
         this.generators = [];
+        this.generatorConfigs.clear();
         console.log('[MergeSystem] 初始化完成');
     }
 
@@ -497,18 +499,44 @@ export class MergeSystem {
      */
     public loadGeneratorConfigs(generatorConfigs: any[]): void {
         console.log('[MergeSystem] 加载生成器配置...');
-        this.generators = generatorConfigs.map(config => {
-            const generator = new Generator({
-                id: config.id,
-                name: config.name,
-                description: config.description,
-                unlockChapter: config.unlockChapter,
-                unlockConditions: config.unlockConditions,
-                production: config.production
-            });
-            return generator;
+        this.generatorConfigs.clear();
+        this.generators = [];
+
+        generatorConfigs.forEach(config => {
+            this.generatorConfigs.set(config.id, config);
+
+            if (config.unlockChapter <= 1 && !config.unlockConditions) {
+                this.unlockGenerator(config.id);
+            }
         });
         console.log(`[MergeSystem] 已加载 ${this.generators.length} 个生成器`);
+    }
+
+    /**
+     * 解锁生成器
+     */
+    public unlockGenerator(generatorId: string): boolean {
+        if (this.getGenerator(generatorId)) {
+            return true;
+        }
+
+        const config = this.generatorConfigs.get(generatorId);
+        if (!config) {
+            console.warn(`[MergeSystem] 找不到生成器配置: ${generatorId}`);
+            return false;
+        }
+
+        const generator = new Generator({
+            id: config.id,
+            name: config.name,
+            description: config.description,
+            unlockChapter: config.unlockChapter,
+            unlockConditions: config.unlockConditions,
+            production: config.production
+        });
+
+        this.generators.push(generator);
+        return true;
     }
 }
 

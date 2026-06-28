@@ -521,7 +521,10 @@ export class GameManager {
         if (reward.connections) {
             this.businessSystem.addConnections(reward.connections);
         }
-        // unlockChapter / unlockGenerator / items 先作为后续系统接入点保留。
+        if (reward.unlockGenerator) {
+            this.mergeSystem.unlockGenerator(reward.unlockGenerator);
+        }
+        // unlockChapter / items 先作为后续系统接入点保留。
     }
 
     /**
