@@ -24,6 +24,11 @@ export class EventManager {
     private events: Map<string, EventListener[]> = new Map();
     private onceEvents: Map<string, Set<EventListener>> = new Map();
 
+    // 内存保护机制
+    private static readonly MAX_LISTENERS = 100; // 单个事件最大监听器数量
+    private static readonly MAX_TOTAL_EVENTS = 1000; // 总事件数量限制
+    private listenerTracker: Map<string, number> = new Map(); // 监听器注册追踪
+
     private constructor() {}
 
     /**
@@ -42,7 +47,31 @@ export class EventManager {
     public init(): void {
         this.events.clear();
         this.onceEvents.clear();
+        this.listenerTracker.clear();
         console.log('[EventManager] 初始化完成');
+    }
+
+    /**
+     * 检查是否超过监听器限制
+     */
+    private checkListenerLimit(eventName: string): void {
+        const currentCount = this.listenerTracker.get(eventName) || 0;
+        if (currentCount >= EventManager.MAX_LISTENERS) {
+            console.warn(`[EventManager] 事件 ${eventName} 监听器数量超过限制 (${EventManager.MAX_LISTENERS})，可能存在内存泄漏`);
+        }
+
+        const totalListeners = Array.from(this.listenerTracker.values()).reduce((sum, count) => sum + count, 0);
+        if (totalListeners >= EventManager.MAX_TOTAL_EVENTS) {
+            console.warn(`[EventManager] 总监听器数量超过限制 (${EventManager.MAX_TOTAL_EVENTS})，可能存在内存泄漏`);
+        }
+    }
+
+    /**
+     * 更新监听器追踪
+     */
+    private updateListenerTracking(eventName: string, delta: number): void {
+        const currentCount = this.listenerTracker.get(eventName) || 0;
+        this.listenerTracker.set(eventName, Math.max(0, currentCount + delta));
     }
 
     /**
@@ -52,11 +81,14 @@ export class EventManager {
      * @param once 是否只触发一次
      */
     public on(eventName: string, callback: EventListener, once: boolean = false): void {
+        this.checkListenerLimit(eventName);
+
         if (!this.events.has(eventName)) {
             this.events.set(eventName, []);
         }
 
         this.events.get(eventName)!.push(callback);
+        this.updateListenerTracking(eventName, 1);
 
         if (once) {
             if (!this.onceEvents.has(eventName)) {
@@ -77,6 +109,7 @@ export class EventManager {
             const index = listeners.indexOf(callback);
             if (index > -1) {
                 listeners.splice(index, 1);
+                this.updateListenerTracking(eventName, -1);
             }
 
             // 同时移除一次性事件标记
@@ -103,6 +136,8 @@ export class EventManager {
                     callback(...args);
                 } catch (error) {
                     console.error(`[EventManager] 事件 ${eventName} 回调执行错误:`, error);
+                    // 移除出错的事件监听器，防止连续错误
+                    this.off(eventName, callback);
                 }
             }
 
@@ -132,11 +167,14 @@ export class EventManager {
      */
     public removeAll(eventName?: string): void {
         if (eventName) {
+            const count = this.listenerTracker.get(eventName) || 0;
+            this.listenerTracker.set(eventName, 0);
             this.events.delete(eventName);
             this.onceEvents.delete(eventName);
         } else {
             this.events.clear();
             this.onceEvents.clear();
+            this.listenerTracker.clear();
         }
     }
 
@@ -155,6 +193,62 @@ export class EventManager {
      */
     public hasListeners(eventName: string): boolean {
         return this.getListenerCount(eventName) > 0;
+    }
+
+    /**
+     * 获取系统状态
+     */
+    public getSystemStatus(): any {
+        const totalListeners = Array.from(this.listenerTracker.values()).reduce((sum, count) => sum + count, 0);
+        const eventDetails = Array.from(this.events.entries()).map(([name, listeners]) => ({
+            name,
+            count: listeners.length,
+            onceCount: this.onceEvents.get(name)?.size || 0
+        }));
+
+        return {
+            totalEvents: this.events.size,
+            totalListeners,
+            maxListenersPerEvent: EventManager.MAX_LISTENERS,
+            maxTotalEvents: EventManager.MAX_TOTAL_EVENTS,
+            eventDetails
+        };
+    }
+
+    /**
+     * 清理无效监听器
+     */
+    public cleanupInvalidListeners(): void {
+        let cleaned = 0;
+
+        for (const [eventName, listeners] of this.events.entries()) {
+            const initialCount = listeners.length;
+
+            // 移除已失效的监听器
+            for (let i = listeners.length - 1; i >= 0; i--) {
+                try {
+                    // 测试监听器是否有效
+                    const test = listeners[i].toString();
+                    if (!test || test === 'function () { [native code] }') {
+                        listeners.splice(i, 1);
+                        cleaned++;
+                    }
+                } catch (error) {
+                    listeners.splice(i, 1);
+                    cleaned++;
+                }
+            }
+
+            // 更新追踪计数
+            const removed = initialCount - listeners.length;
+            if (removed > 0) {
+                this.updateListenerTracking(eventName, -removed);
+            }
+        }
+
+        if (cleaned > 0) {
+            console.log(`[EventManager] 清理了 ${cleaned} 个无效监听器`);
+        }
     }
 }
 

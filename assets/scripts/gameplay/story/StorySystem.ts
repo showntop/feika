@@ -27,6 +27,15 @@ export interface DialogueLine {
 }
 
 /**
+ * 物品需求结构
+ */
+export interface ItemRequirement {
+    itemId: string;      // 物品ID
+    level: number;       // 物品等级
+    count: number;       // 需要数量
+}
+
+/**
  * 剧情事件需求
  */
 export interface EventRequirement {
@@ -359,12 +368,30 @@ export class StorySystem {
     /**
      * 完成当前事件
      */
-    public completeCurrentEvent(giveRewardCallback: (reward: EventReward) => void): boolean {
+    public completeCurrentEvent(
+        giveRewardCallback: (reward: EventReward) => void,
+        consumeItemCallback?: (itemId: string, level: number, count: number) => boolean
+    ): boolean {
         if (!this.activeEvent) {
             return false;
         }
 
         const eventId = this.activeEvent.getId();
+
+        // 如果有物品需求，先消耗物品
+        if (consumeItemCallback) {
+            const requirements = this.activeEvent.getRequirements();
+            for (const req of requirements) {
+                if (req.type === 'item') {
+                    const itemReq = req.value as ItemRequirement;
+                    if (!consumeItemCallback(itemReq.itemId, itemReq.level, itemReq.count)) {
+                        console.error(`[StorySystem] 消耗物品失败: ${itemReq.itemId}`);
+                        return false;
+                    }
+                }
+            }
+        }
+
         this.activeEvent.complete(giveRewardCallback);
         this.completedEvents.add(eventId);
         this.activeEvent = null;

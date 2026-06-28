@@ -53,6 +53,11 @@ export class MergeSystem {
     private currentEnergy: number = 40;
     private lastEnergyUpdateTime: number = Date.now();
 
+    // 性能优化：缓存机制
+    private itemsCache: MergeItem[] | null = null;
+    private emptySlotsCache: GridPosition[] | null = null;
+    private cacheDirty: boolean = true;
+
     private constructor() {
         this.initGrid();
     }
@@ -89,6 +94,8 @@ export class MergeSystem {
                 this.grid[x][y] = null;
             }
         }
+        // 标记缓存失效
+        this.markCacheDirty();
     }
 
     /**
@@ -123,6 +130,13 @@ export class MergeSystem {
     }
 
     /**
+     * 标记缓存失效
+     */
+    private markCacheDirty(): void {
+        this.cacheDirty = true;
+    }
+
+    /**
      * 在指定位置放置物品
      */
     public placeItem(item: MergeItem, position: GridPosition): boolean {
@@ -136,6 +150,9 @@ export class MergeSystem {
 
         this.grid[position.x][position.y] = item;
         item.setGridPosition(position);
+
+        // 标记缓存失效
+        this.markCacheDirty();
 
         EventManager.getInstance().emit(GameEvents.ITEM_CONSUMED, {
             item,
@@ -157,6 +174,9 @@ export class MergeSystem {
         if (item) {
             item.setGridPosition(null);
             this.grid[position.x][position.y] = null;
+
+            // 标记缓存失效
+            this.markCacheDirty();
         }
 
         return item;
@@ -196,6 +216,9 @@ export class MergeSystem {
             this.grid[fromPos.x][fromPos.y] = null;
             fromItem.setGridPosition(toPos);
 
+            // 标记缓存失效
+            this.markCacheDirty();
+
             return { success: true };
         }
 
@@ -210,6 +233,9 @@ export class MergeSystem {
             // 合成失败，但移除源物品
             this.grid[fromPos.x][fromPos.y] = null;
             fromItem.setGridPosition(null);
+
+            // 标记缓存失效
+            this.markCacheDirty();
 
             EventManager.getInstance().emit(GameEvents.MERGE_FAIL, {
                 position: toPos,
@@ -229,6 +255,9 @@ export class MergeSystem {
 
         // 移除源物品
         this.grid[fromPos.x][fromPos.y] = null;
+
+        // 标记缓存失效
+        this.markCacheDirty();
 
         // 触发合成成功事件
         EventManager.getInstance().emit(GameEvents.MERGE_SUCCESS, {
@@ -297,11 +326,16 @@ export class MergeSystem {
     }
 
     /**
-     * 获取所有空位置
+     * 获取所有空位置（优化版：使用缓存）
      */
     public getEmptySlots(): GridPosition[] {
-        const emptySlots: GridPosition[] = [];
+        // 如果缓存有效，直接返回缓存副本
+        if (!this.cacheDirty && this.emptySlotsCache) {
+            return [...this.emptySlotsCache];
+        }
 
+        // 重新构建缓存
+        const emptySlots: GridPosition[] = [];
         for (let x = 0; x < this.config.gridSize; x++) {
             for (let y = 0; y < this.config.gridSize; y++) {
                 if (this.grid[x][y] === null) {
@@ -310,15 +344,25 @@ export class MergeSystem {
             }
         }
 
-        return emptySlots;
+        // 更新缓存
+        this.emptySlotsCache = emptySlots;
+        this.itemsCache = null; // 清空物品缓存
+        this.cacheDirty = false;
+
+        return [...emptySlots];
     }
 
     /**
-     * 获取所有物品
+     * 获取所有物品（优化版：使用缓存）
      */
     public getAllItems(): MergeItem[] {
-        const items: MergeItem[] = [];
+        // 如果缓存有效，直接返回缓存副本
+        if (!this.cacheDirty && this.itemsCache) {
+            return [...this.itemsCache];
+        }
 
+        // 重新构建缓存
+        const items: MergeItem[] = [];
         for (let x = 0; x < this.config.gridSize; x++) {
             for (let y = 0; y < this.config.gridSize; y++) {
                 if (this.grid[x][y] !== null) {
@@ -327,7 +371,12 @@ export class MergeSystem {
             }
         }
 
-        return items;
+        // 更新缓存
+        this.itemsCache = items;
+        this.emptySlotsCache = null; // 清空空位置缓存
+        this.cacheDirty = false;
+
+        return [...items];
     }
 
     /**
@@ -470,12 +519,15 @@ export class MergeSystem {
      * 获取系统状态
      */
     public getSystemState(): any {
+        const items = this.getAllItems();
+        const emptySlots = this.getEmptySlots();
+
         return {
             gridSize: this.config.gridSize,
             currentEnergy: this.getCurrentEnergy(),
             maxEnergy: this.config.maxEnergy,
-            itemCount: this.getAllItems().length,
-            emptySlots: this.getEmptySlots().length,
+            itemCount: items.length,
+            emptySlots: emptySlots.length,
             generators: this.generators.map(g => ({
                 id: g.getId(),
                 name: g.getName(),

@@ -512,6 +512,7 @@ export class BusinessSystem {
         console.log(`[BusinessSystem] 已加载 ${this.orderConfigs.length} 个订单配置`);
         console.log(`[BusinessSystem] 已加载 ${this.upgradeConfigs.length} 个店铺升级配置`);
     }
+
 }
 
 export default BusinessSystem;

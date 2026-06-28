@@ -1,0 +1,145 @@
+{
+  "orders": [
+    {
+      "id": "order_first_customer",
+      "title": "第一位顾客",
+      "description": "你的第一位顾客，想要购买一些小商品",
+      "customerType": "normal",
+      "requiredItems": [
+        {
+          "itemId": "product_1",
+          "level": 1,
+          "count": 2
+        }
+      ],
+      "rewards": {
+        "cash": 30,
+        "reputation": 5
+      },
+      "duration": 180,
+      "difficulty": 1,
+      "unlockChapter": 1
+    },
+    {
+      "id": "order_regular_customer",
+      "title": "回头客",
+      "description": "一位老顾客想要购买商品",
+      "customerType": "regular",
+      "requiredItems": [
+        {
+          "itemId": "product_2",
+          "level": 2,
+          "count": 1
+        }
+      ],
+      "rewards": {
+        "cash": 60,
+        "reputation": 10,
+        "connections": 2
+      },
+      "duration": 240,
+      "difficulty": 2,
+      "unlockChapter": 1
+    },
+    {
+      "id": "order_wholesale_purchase",
+      "title": "批发订单",
+      "description": "一个批发商想要大量采购",
+      "customerType": "wholesale",
+      "requiredItems": [
+        {
+          "itemId": "product_1",
+          "level": 1,
+          "count": 5
+        },
+        {
+          "itemId": "product_2",
+          "level": 2,
+          "count": 2
+        }
+      ],
+      "rewards": {
+        "cash": 150,
+        "reputation": 15,
+        "connections": 5
+      },
+      "duration": 300,
+      "difficulty": 3,
+      "unlockChapter": 1
+    },
+    {
+      "id": "order_vip_request",
+      "title": "VIP客户需求",
+      "description": "一位VIP客户有特殊需求",
+      "customerType": "vip",
+      "requiredItems": [
+        {
+          "itemId": "product_3",
+          "level": 3,
+          "count": 1
+        }
+      ],
+      "rewards": {
+        "cash": 200,
+        "reputation": 25,
+        "connections": 10
+      },
+      "duration": 200,
+      "difficulty": 4,
+      "unlockChapter": 2
+    }
+  ],
+  "shopUpgrades": [
+    {
+      "id": "upgrade_signage",
+      "name": "招牌升级",
+      "description": "升级店铺招牌，吸引更多顾客",
+      "level": 1,
+      "costs": {
+        "cash": 200,
+        "reputation": 10
+      },
+      "benefits": {
+        "maxOrders": 1,
+        "orderRefreshInterval": 30,
+        "customerBonus": 0.1
+      },
+      "description": "让你的店铺更容易被顾客找到"
+    },
+    {
+      "id": "upgrade_shelf",
+      "name": "货架扩充",
+      "description": "增加货架空间，可以展示更多商品",
+      "level": 2,
+      "costs": {
+        "cash": 500,
+        "reputation": 20,
+        "connections": 5
+      },
+      "benefits": {
+        "maxOrders": 2,
+        "storageBonus": 10,
+        "orderRefreshInterval": 20
+      },
+      "description": "扩大经营范围，接受更多订单"
+    },
+    {
+      "id": "upgrade_premium_location",
+      "name": "黄金位置",
+      "description": "搬到人流量更大的位置",
+      "level": 3,
+      "costs": {
+        "cash": 1500,
+        "reputation": 50,
+        "connections": 15
+      },
+      "benefits": {
+        "maxOrders": 3,
+        "orderRefreshInterval": 40,
+        "customerBonus": 0.3,
+        "reputationBonus": 0.2
+      },
+      "description": "在更好的地段经营，获得更多优质客户"
+    }
+  ]
+}

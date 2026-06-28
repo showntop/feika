@@ -175,8 +175,8 @@
       "unlockChapter": 1,
       "production": {
         "items": ["product_1", "money_1"],
-        "weights": [70, 30],
-        "cooldown": 3,
+        "weights": [80, 20],
+        "cooldown": 2,
         "energyCost": 1
       }
     },
@@ -187,8 +187,8 @@
       "unlockChapter": 1,
       "production": {
         "items": ["money_1", "money_2"],
-        "weights": [60, 40],
-        "cooldown": 5,
+        "weights": [40, 60],
+        "cooldown": 3,
         "energyCost": 1
       }
     },

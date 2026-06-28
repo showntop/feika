@@ -3,6 +3,12 @@
  * 协调所有游戏系统，管理游戏状态和流程
  */
 
+// 声明浏览器API类型
+declare global {
+    var requestAnimationFrame: (callback: (time: number) => void) => number;
+    var cancelAnimationFrame: (id: number) => void;
+}
+
 import { EventManager, GameEvents } from './EventManager';
 import { MergeSystem } from '../gameplay/merge/MergeSystem';
 import { BusinessSystem } from '../gameplay/business/BusinessSystem';
@@ -175,38 +181,71 @@ export class GameManager {
     }
 
     /**
-     * 游戏主循环
+     * 游戏主循环（优化版）
      */
+    private gameLoopRAF: any = null;
+    private targetFPS: number = 60;
+    private frameInterval: number = 1000 / this.targetFPS;
+    private lastFrameTime: number = 0;
+
     private gameLoop(): void {
         if (this.isPaused || this.gameState !== GameState.PLAYING) {
             return;
         }
 
-        const now = Date.now();
-        this.deltaTime = (now - this.lastUpdateTime) / 1000; // 转换为秒
-        this.lastUpdateTime = now;
+        const now = performance.now();
+        const elapsed = now - this.lastFrameTime;
 
-        // 更新各系统
-        this.update(this.deltaTime);
+        // 帧率控制，避免过度频繁更新
+        if (elapsed >= this.frameInterval) {
+            // 限制最大帧间隔，防止切出页面后突然的大跳跃
+            const deltaTime = Math.min(elapsed, 100) / 1000; // 最大100ms，转换为秒
+            this.lastFrameTime = now - (elapsed % this.frameInterval);
 
-        // 继续循环 (使用setTimeout代替requestAnimationFrame以避免浏览器环境依赖)
-        setTimeout(() => this.gameLoop(), 16); // 约60fps
+            // 更新各系统
+            this.update(deltaTime);
+        }
+
+        // 使用requestAnimationFrame实现更高效的循环
+        if (typeof requestAnimationFrame !== 'undefined') {
+            this.gameLoopRAF = requestAnimationFrame(() => this.gameLoop());
+        }
     }
 
     /**
      * 开始游戏循环
      */
     private startGameLoop(): void {
-        this.lastUpdateTime = Date.now();
-        setTimeout(() => this.gameLoop(), 16);
+        this.lastFrameTime = performance.now();
+        if (typeof requestAnimationFrame !== 'undefined') {
+            this.gameLoopRAF = requestAnimationFrame(() => this.gameLoop());
+        }
     }
 
     /**
-     * 更新游戏逻辑
+     * 停止游戏循环
      */
+    private stopGameLoop(): void {
+        if (this.gameLoopRAF && typeof cancelAnimationFrame !== 'undefined') {
+            cancelAnimationFrame(this.gameLoopRAF);
+            this.gameLoopRAF = null;
+        }
+    }
+
+    /**
+     * 更新游戏逻辑（优化版）
+     */
+    private lastOrderRefresh: number = 0;
+    private orderRefreshInterval: number = 1000; // 订单刷新间隔（毫秒）
+
     private update(dt: number): void {
-        // 更新经营系统（订单刷新等）
-        this.businessSystem.refreshOrders();
+        const now = performance.now();
+
+        // 优化：订单刷新不必每帧都检查
+        if (now - this.lastOrderRefresh >= this.orderRefreshInterval) {
+            this.businessSystem.refreshOrders();
+            this.lastOrderRefresh = now;
+        }
 
         // 检查剧情事件
         this.storySystem.checkAndTriggerEvents((req) => this.checkRequirement(req));
@@ -411,6 +450,7 @@ export class GameManager {
         return this.compareValues(playerValue, value, operator);
     }
 
+
     /**
      * 比较数值
      */
@@ -499,13 +539,11 @@ export class GameManager {
             return false;
         }
 
-        for (const requirement of itemRequirements) {
-            if (!this.consumeItemRequirement(requirement.value)) {
-                return false;
-            }
-        }
-
-        return this.storySystem.completeCurrentEvent((reward) => this.applyStoryReward(reward));
+        // 调用completeCurrentEvent时传入consumeItemCallback
+        return this.storySystem.completeCurrentEvent(
+            (reward) => this.applyStoryReward(reward),
+            (itemId: string, level: number, count: number) => this.mergeSystem.consumeItem(itemId, level, count)
+        );
     }
 
     /**

@@ -461,7 +461,515 @@
         "value": 10000
       },
       "scenes": ["night_market"],
-      "events": [],
+      "events": [
+        {
+          "id": "event_ch2_night_market_opportunity",
+          "type": "main",
+          "title": "夜市机会",
+          "description": "得知夜市有个摊位要转让，是个好机会",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "第一桶金的成功让你信心倍增，你盯上了更大的机会...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "夜市人流量大，而且这个时候夜文化正在兴起...",
+              "emotion": "thinking",
+              "duration": 2000
+            },
+            {
+              "speaker": "老摊主",
+              "text": "小伙子，我看你做得不错，夜市这边有个摊位要转，有兴趣吗？",
+              "emotion": "friendly",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "夜市摊位？这倒是个机会，位置怎么样？",
+              "emotion": "interested",
+              "duration": 2000
+            },
+            {
+              "speaker": "老摊主",
+              "text": "位置不错，不过要抢的人不少，你要有心理准备。",
+              "emotion": "serious",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "item",
+              "value": {
+                "itemId": "money_5",
+                "level": 5,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 100,
+            "reputation": 2,
+            "connections": 1
+          },
+          "triggerOnce": true,
+          "priority": 10
+        },
+        {
+          "id": "event_ch2_competitor_analysis",
+          "type": "event",
+          "title": "竞争对手分析",
+          "description": "观察夜市竞争对手，找出差异化机会",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "你来到夜市，仔细观察每个摊位的经营情况...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "东边卖服装，西边卖小吃，中间卖小饰品...",
+              "emotion": "observing",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "卖小饰品的最多，但都是老款式。我前世记得这时候学生最流行韩流饰品！",
+              "emotion": "insight",
+              "duration": 3000
+            },
+            {
+              "speaker": "旁白",
+              "text": "你的前世记忆再次发挥了作用...",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_night_market_opportunity"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_3",
+                "level": 3,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 150,
+            "reputation": 2
+          },
+          "triggerOnce": true,
+          "priority": 7
+        },
+        {
+          "id": "event_ch2_first_night_sell",
+          "type": "event",
+          "title": "首夜试营业",
+          "description": "第一次在夜市摆摊，测试韩流饰品的市场反应",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "你准备了韩流饰品，开始了第一次夜市试营业...",
+              "duration": 2000
+            },
+            {
+              "speaker": "女学生顾客",
+              "text": "哇！这个款式我见过韩国明星戴过！",
+              "emotion": "excited",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "小姑娘眼光不错，这是最新韩款，别的地方都还没有。",
+              "emotion": "smiling",
+              "duration": 2500
+            },
+            {
+              "speaker": "女学生顾客",
+              "text": "我要这个！还有那个！",
+              "emotion": "enthusiastic",
+              "duration": 1500
+            },
+            {
+              "speaker": "旁白",
+              "text": "韩流饰品果然受欢迎，第一晚就卖出了不少...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "方向对了！接下来就是扩大规模，准备更多货品。",
+              "emotion": "confident",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_competitor_analysis"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_3",
+                "level": 3,
+                "count": 2
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 300,
+            "reputation": 3,
+            "connections": 1
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch2_supply_channel",
+          "type": "event",
+          "title": "进货渠道",
+          "description": "找到更便宜的批发渠道，提升利润空间",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "生意越来越好，你意识到需要找到稳定的货源...",
+              "duration": 2000
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "小伙子生意不错啊，要不要考虑从我这进货？价格比别家优惠。",
+              "emotion": "business",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "老张老板，什么价位？我要量大的话能有多优惠？",
+              "emotion": "negotiating",
+              "duration": 2500
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "看你是个实在人，给你个底价，但量要够。",
+              "emotion": "friendly",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "成交！我先定一批货，如果好卖，后续长期合作。",
+              "emotion": "decisive",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_first_night_sell"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "connection_3",
+                "level": 3,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 200,
+            "reputation": 2,
+            "connections": 2,
+            "specialEvent": "wholesale_discount_10_percent"
+          },
+          "triggerOnce": true,
+          "priority": 7
+        },
+        {
+          "id": "event_ch2_competitor_challenge",
+          "type": "event",
+          "title": "竞争对手挑战",
+          "description": "其他摊主开始模仿你的韩流饰品",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "你的韩流饰品生意火爆，引起了其他摊主的注意...",
+              "duration": 2000
+            },
+            {
+              "speaker": "竞争对手摊主",
+              "text": "小伙子，我看你生意不错啊。不过我也找到了韩流货源，咱们比比谁卖得好？",
+              "emotion": "competitive",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "（心里想着：才几天就被模仿了，看来得升级策略了）",
+              "emotion": "thinking",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "欢迎竞争！不过顾客眼睛是雪亮的，谁家货好，他们自然知道。",
+              "emotion": "confident",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你意识到必须加快升级速度，保持领先优势...",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_supply_channel"
+            }
+          ],
+          "rewards": {
+            "cash": 100,
+            "reputation": 2
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch2_product_upgrade",
+          "type": "event",
+          "title": "产品升级",
+          "description": "推出高端韩流饰品，差异化竞争",
+          "dialogue": [
+            {
+              "speaker": "主角",
+              "text": "普通韩流饰品容易被模仿，我需要做中高端市场。",
+              "emotion": "thinking",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你想起前世，2010年下半年开始流行手工定制和个性化饰品...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "对！就做个性化定制韩流饰品，每款限量，这样别人就模仿不了了！",
+              "emotion": "insight",
+              "duration": 3000
+            },
+            {
+              "speaker": "旁白",
+              "text": "你开始设计限量版韩流饰品，每款都有独特故事...",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_competitor_challenge"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_4",
+                "level": 4,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 250,
+            "reputation": 3
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch2_vip_customers",
+          "type": "event",
+          "title": "VIP客户群体",
+          "description": "培养了一批忠实的VIP客户",
+          "dialogue": [
+            {
+              "speaker": "老客户",
+              "text": "老板，你的限量版饰品太受欢迎了！我朋友都想买。",
+              "emotion": "excited",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "感谢支持！给你们这些老客户，我每款都预留了优先购买权。",
+              "emotion": "grateful",
+              "duration": 2500
+            },
+            {
+              "speaker": "老客户",
+              "text": "太好了！我现在就预订下个月的限量款！",
+              "emotion": "enthusiastic",
+              "duration": 2000
+            },
+            {
+              "speaker": "旁白",
+              "text": "稳定的VIP客户群体让你的生意更加稳固...",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_product_upgrade"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "relationship_4",
+                "level": 4,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 400,
+            "reputation": 4,
+            "connections": 2
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch2_golden_stall_opportunity",
+          "type": "main",
+          "title": "黄金摊位机会",
+          "description": "夜市黄金摊位即将竞标，这是拿下它的机会",
+          "dialogue": [
+            {
+              "speaker": "夜市管理员",
+              "text": "各位摊主，夜市入口处的黄金摊位即将重新竞标，有意者请准备。",
+              "emotion": "official",
+              "duration": 3000
+            },
+            {
+              "speaker": "竞争对手摊主",
+              "text": "黄金摊位！我一定要拿下！",
+              "emotion": "determined",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "黄金摊位人流量是普通摊位的3倍，拿下它意味着业绩能翻倍！",
+              "emotion": "calculating",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你算了算，现在手头的资金加上预期的收入，刚好够竞标...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "这个机会我绝对不会放过！",
+              "emotion": "determined",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_vip_customers"
+            },
+            {
+              "type": "cash",
+              "value": 5000
+            }
+          ],
+          "rewards": {
+            "reputation": 5,
+            "connections": 2
+          },
+          "triggerOnce": true,
+          "priority": 10
+        },
+        {
+          "id": "event_ch2_bid_war",
+          "type": "main",
+          "title": "竞标大战",
+          "description": "在黄金摊位竞标中击败竞争对手",
+          "dialogue": [
+            {
+              "speaker": "夜市管理员",
+              "text": "现在开始竞标！起拍价5000，每次加价500！",
+              "emotion": "official",
+              "duration": 2500
+            },
+            {
+              "speaker": "竞争对手摊主",
+              "text": "我出6000！",
+              "emotion": "confident",
+              "duration": 1500
+            },
+            {
+              "speaker": "主角",
+              "text": "我出7000！",
+              "emotion": "determined",
+              "duration": 1500
+            },
+            {
+              "speaker": "竞争对手摊主",
+              "text": "什么？这么高？我出8000！",
+              "emotion": "shocked",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "9000！这个摊位我拿定了！",
+              "emotion": "firm",
+              "duration": 2000
+            },
+            {
+              "speaker": "竞争对手摊主",
+              "text": "...算了，给你了。这也太拼了...",
+              "emotion": "defeated",
+              "duration": 2500
+            },
+            {
+              "speaker": "夜市管理员",
+              "text": "成交！9000元，黄金摊位归这位小伙子了！",
+              "emotion": "official",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你拿下了黄金摊位！这是你商业路上的第一个重要里程碑。",
+              "duration": 3000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch2_golden_stall_opportunity"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "money_10",
+                "level": 10,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 1000,
+            "reputation": 10,
+            "connections": 3,
+            "unlockChapter": "chapter_3",
+            "specialItem": "golden_stall_certificate"
+          },
+          "triggerOnce": true,
+          "priority": 10
+        }
+      ],
       "isFinalChapter": false
     },
     {
@@ -476,6 +984,438 @@
         "value": 30000
       },
       "scenes": ["street_shop"],
+      "events": [
+        {
+          "id": "event_ch3_shop_opportunity",
+          "type": "main",
+          "title": "店铺机会",
+          "description": "发现商业街有小店面转让，是开实体店的好机会",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "黄金摊位的成功让你积累了第一笔可观的资金...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "夜市虽然有生意，但天气和场地受限。是时候考虑开实体店了。",
+              "emotion": "thinking",
+              "duration": 2500
+            },
+            {
+              "speaker": "中介",
+              "text": "老板，商业街有个小店面要转，位置不错，要不要看看？",
+              "emotion": "business",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "商业街？那是人流密集的地方。转让费多少？",
+              "emotion": "interested",
+              "duration": 2000
+            },
+            {
+              "speaker": "中介",
+              "text": "转让费3万，不过装修设备齐全，接手就能营业。",
+              "emotion": "professional",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "3万...我现在手头还不够，但这个机会不能错过！",
+              "emotion": "calculating",
+              "duration": 2500
+            }
+          ],
+          "requirements": [],
+          "rewards": {
+            "reputation": 2,
+            "connections": 1
+          },
+          "triggerOnce": true,
+          "priority": 10
+        },
+        {
+          "id": "event_ch3_golden_stall_expansion",
+          "type": "event",
+          "title": "黄金摊位扩张",
+          "description": "利用黄金摊位优势，扩大经营规模",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "黄金摊位的人流量果然惊人，你的生意蒸蒸日上...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "这个位置的人流量果然是普通摊位的3倍！销售额大幅提升！",
+              "emotion": "excited",
+              "duration": 2500
+            },
+            {
+              "speaker": "老客户",
+              "text": "老板，你现在位置这么好，应该多进点新货！",
+              "emotion": "suggesting",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "说得对！我要扩大经营品类，不仅仅是饰品，还要增加其他商品。",
+              "emotion": "planning",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你开始扩大货品种类，从单一饰品向综合商品转型...",
+              "duration": 2000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_shop_opportunity"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_5",
+                "level": 5,
+                "count": 2
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 500,
+            "reputation": 3
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch3_business_network",
+          "type": "event",
+          "title": "商业网络扩展",
+          "description": "建立更广泛的商业合作关系",
+          "dialogue": [
+            {
+              "speaker": "批发商老张",
+              "text": "小伙子，我看你这生意越做越大，有个机会不知道你感不感兴趣。",
+              "emotion": "opportunity",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "老张老板请说，我洗耳恭听。",
+              "emotion": "respectful",
+              "duration": 2000
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "我们有个批发商联盟，成员之间可以资源共享，你有兴趣加入吗？",
+              "emotion": "inviting",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "批发商联盟？这倒是个好机会，能接触到更多货源和信息。",
+              "emotion": "interested",
+              "duration": 2500
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "不过加入需要一定的人脉基础，你现在还不够。",
+              "emotion": "condition",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "我明白了！我会继续扩大人脉网络，争取早日达到条件。",
+              "emotion": "determined",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_golden_stall_expansion"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "connection_4",
+                "level": 4,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 300,
+            "reputation": 3,
+            "connections": 3
+          },
+          "triggerOnce": true,
+          "priority": 7
+        },
+        {
+          "id": "event_ch3_brand_building",
+          "type": "event",
+          "title": "品牌建设",
+          "description": "开始建立自己的品牌形象",
+          "dialogue": [
+            {
+              "speaker": "主角",
+              "text": "光卖货还不够，我需要建立自己的品牌。",
+              "emotion": "thinking",
+              "duration": 2000
+            },
+            {
+              "speaker": "旁白",
+              "text": "你想起前世，成功的商家都有自己的品牌故事...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "我的品牌故事就是重生商路——给每个人第二次机会的精品！",
+              "emotion": "insight",
+              "duration": 2500
+            },
+            {
+              "speaker": "旁白",
+              "text": "你开始设计自己的logo和包装，统一品牌形象...",
+              "duration": 2000
+            },
+            {
+              "speaker": "顾客",
+              "text": "老板，你这包装真特别！这是什么牌子？",
+              "emotion": "curious",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "这是我的品牌重生商路，专注精品和故事。",
+              "emotion": "proud",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_business_network"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_6",
+                "level": 6,
+                "count": 1
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 400,
+            "reputation": 5
+          },
+          "triggerOnce": true,
+          "priority": 8
+        },
+        {
+          "id": "event_ch3_financial_target",
+          "type": "event",
+          "title": "资金目标",
+          "description": "距离3万元目标越来越近了",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "经过一段时间的努力，你离3万元的目标越来越近...",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "现在手头已经有2万5了，再努力一段时间就能凑齐3万转让费！",
+              "emotion": "counting",
+              "duration": 2500
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "小伙子，你进度不错啊！要不要我给你介绍个大单子？",
+              "emotion": "helpful",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "大单子？老张老板请说，我现在正需要这样的机会！",
+              "emotion": "interested",
+              "duration": 2000
+            },
+            {
+              "speaker": "批发商老张",
+              "text": "有个公司需要采购一批员工礼品，量不小，你有兴趣吗？",
+              "emotion": "opportunity",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "非常有兴趣！这个单子要是接下来，我就能凑齐店铺转让费了！",
+              "emotion": "excited",
+              "duration": 2500
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_brand_building"
+            },
+            {
+              "type": "cash",
+              "value": 25000
+            }
+          ],
+          "rewards": {
+            "cash": 500,
+            "reputation": 2
+          },
+          "triggerOnce": true,
+          "priority": 9
+        },
+        {
+          "id": "event_ch3_big_contract",
+          "type": "main",
+          "title": "大合同",
+          "description": "拿下公司采购大单，凑齐店铺转让费",
+          "dialogue": [
+            {
+              "speaker": "公司采购经理",
+              "text": "我看过你的货品，质量和价格都不错。这单我们要1000份礼品。",
+              "emotion": "professional",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "1000份！这个量不小，我马上安排生产！",
+              "emotion": "excited",
+              "duration": 2500
+            },
+            {
+              "speaker": "公司采购经理",
+              "text": "不过我们要求3天内交货，你能做到吗？",
+              "emotion": "demanding",
+              "duration": 2000
+            },
+            {
+              "speaker": "主角",
+              "text": "3天...时间有点紧，但我一定能做到！",
+              "emotion": "challenged",
+              "duration": 2000
+            },
+            {
+              "speaker": "旁白",
+              "text": "这是个挑战，但也是机会！只要拿下这个单子，店铺转让费就齐了！",
+              "duration": 3000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_financial_target"
+            },
+            {
+              "type": "item",
+              "value": {
+                "itemId": "product_7",
+                "level": 7,
+                "count": 3
+              }
+            }
+          ],
+          "rewards": {
+            "cash": 8000,
+            "reputation": 5,
+            "connections": 2
+          },
+          "triggerOnce": true,
+          "priority": 10
+        },
+        {
+          "id": "event_ch3_open_shop",
+          "type": "main",
+          "title": "开店",
+          "description": "终于凑齐转让费，盘下商业街店铺",
+          "dialogue": [
+            {
+              "speaker": "旁白",
+              "text": "大合同的成功让你终于凑齐了3万元转让费...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "3万元！我终于可以开店了！",
+              "emotion": "excited",
+              "duration": 2000
+            },
+            {
+              "speaker": "中介",
+              "text": "恭喜老板！店铺从今天起就是你的了。这是钥匙和合同。",
+              "emotion": "congratulating",
+              "duration": 3000
+            },
+            {
+              "speaker": "主角",
+              "text": "谢谢！这是我从地摊到实体店的第一步，也是最重要的里程碑！",
+              "emotion": "proud",
+              "duration": 3000
+            },
+            {
+              "speaker": "旁白",
+              "text": "你拿着钥匙，站在自己的店铺门口，感慨万千...",
+              "duration": 2500
+            },
+            {
+              "speaker": "主角",
+              "text": "从500元起家，到现在拥有自己的店铺。重生给了我从头再来的机会！",
+              "emotion": "emotional",
+              "duration": 3000
+            },
+            {
+              "speaker": "旁白",
+              "text": "重生商路的第一家实体店正式开业！更大的商业帝国从这里起步！",
+              "duration": 3000
+            }
+          ],
+          "requirements": [
+            {
+              "type": "event_complete",
+              "value": "event_ch3_big_contract"
+            },
+            {
+              "type": "cash",
+              "value": 30000
+            }
+          ],
+          "rewards": {
+            "cash": 5000,
+            "reputation": 15,
+            "connections": 5,
+            "specialItem": "shop_deed_certificate",
+            "unlockChapter": "chapter_4"
+          },
+          "triggerOnce": true,
+          "priority": 10
+        }
+      ],
+      "isFinalChapter": false
+    },
+    {
+      "id": "chapter_4",
+      "title": "连锁扩张，商业帝国初现",
+      "description": "从单店到连锁，建立商业帝国雏形",
+      "year": 2012,
+      "chapterNumber": 4,
+      "mainGoal": "开设3家连锁店，建立品牌影响力",
+      "goalTarget": {
+        "type": "complete_events",
+        "value": 12
+      },
+      "scenes": ["chain_stores", "brand_office"],
       "events": [],
       "isFinalChapter": false
     }
