@@ -13,6 +13,7 @@ import { EventManager, GameEvents } from './EventManager';
 import { MergeSystem } from '../gameplay/merge/MergeSystem';
 import { BusinessSystem } from '../gameplay/business/BusinessSystem';
 import { StorySystem, EventRequirement, EventReward } from '../gameplay/story/StorySystem';
+import { StorageManager } from './StorageManager';
 
 /**
  * 游戏状态
@@ -66,6 +67,7 @@ export class GameManager {
     private mergeSystem: MergeSystem;
     private businessSystem: BusinessSystem;
     private storySystem: StorySystem;
+    private storageManager: StorageManager;
 
     // 游戏状态
     private gameState: GameState = GameState.LOADING;
@@ -81,6 +83,7 @@ export class GameManager {
         this.mergeSystem = MergeSystem.getInstance();
         this.businessSystem = BusinessSystem.getInstance();
         this.storySystem = StorySystem.getInstance();
+        this.storageManager = StorageManager.getInstance();
 
         this.playerData = this.createDefaultPlayerData();
     }
@@ -106,6 +109,9 @@ export class GameManager {
 
         // 初始化事件系统
         this.eventManager.init();
+
+        // 初始化存储管理器
+        this.storageManager.init();
 
         // 初始化各游戏系统
         this.mergeSystem.init();
@@ -332,11 +338,18 @@ export class GameManager {
      */
     private async loadPlayerData(): Promise<void> {
         try {
-            // TODO: 从本地存储或服务器加载玩家数据
-            // const savedData = localStorage.getItem('player_data');
-            // if (savedData) {
-            //     this.playerData = JSON.parse(savedData);
-            // }
+            // 尝试从自动保存槽位加载
+            const savedData = await this.storageManager.loadFromSlot('slot_0');
+
+            if (savedData && savedData.playerData) {
+                // 验证数据完整性
+                this.playerData = savedData.playerData;
+                console.log('[GameManager] 从存档加载玩家数据成功');
+            } else {
+                // 使用默认数据
+                this.playerData = this.createDefaultPlayerData();
+                console.log('[GameManager] 使用默认玩家数据');
+            }
 
             console.log('[GameManager] 玩家数据加载完成');
         } catch (error) {
@@ -585,12 +598,106 @@ export class GameManager {
      */
     private async savePlayerData(): Promise<void> {
         try {
-            // TODO: 保存到本地存储或服务器
-            // localStorage.setItem('player_data', JSON.stringify(this.playerData));
-            console.log('[GameManager] 玩家数据已保存');
+            // 使用自动保存功能
+            const success = await this.storageManager.autoSave(this.playerData, this.gameState);
+
+            if (success) {
+                console.log('[GameManager] 玩家数据已自动保存');
+            } else {
+                console.error('[GameManager] 自动保存失败');
+            }
         } catch (error) {
             console.error('[GameManager] 保存玩家数据失败:', error);
         }
+    }
+
+    /**
+     * 手动保存游戏
+     */
+    public async saveGame(slotId?: string, slotName?: string): Promise<boolean> {
+        try {
+            const targetSlot = slotId || 'slot_0';
+            const targetName = slotName || `手动保存 ${new Date().toLocaleString()}`;
+
+            const success = await this.storageManager.saveToSlot(
+                targetSlot,
+                targetName,
+                this.playerData,
+                this.gameState
+            );
+
+            if (success) {
+                console.log(`[GameManager] 游戏已保存到槽位 ${targetSlot}`);
+                return true;
+            } else {
+                console.error(`[GameManager] 保存到槽位 ${targetSlot} 失败`);
+                return false;
+            }
+        } catch (error) {
+            console.error('[GameManager] 手动保存失败:', error);
+            return false;
+        }
+    }
+
+    /**
+     * 手动加载游戏
+     */
+    public async loadGame(slotId: string): Promise<boolean> {
+        try {
+            console.log(`[GameManager] 从槽位 ${slotId} 加载游戏`);
+
+            const savedData = await this.storageManager.loadFromSlot(slotId);
+
+            if (savedData && savedData.playerData) {
+                // 验证并加载玩家数据
+                this.playerData = savedData.playerData;
+
+                // 同步数据到各系统
+                this.syncDataToSystems();
+
+                // 恢复游戏状态
+                if (savedData.gameState) {
+                    this.setGameState(savedData.gameState as GameState);
+                }
+
+                console.log(`[GameManager] 从槽位 ${slotId} 加载游戏成功`);
+                return true;
+            } else {
+                console.error(`[GameManager] 槽位 ${slotId} 数据无效`);
+                return false;
+            }
+        } catch (error) {
+            console.error(`[GameManager] 从槽位 ${slotId} 加载游戏失败:`, error);
+            return false;
+        }
+    }
+
+    /**
+     * 获取所有存档槽位
+     */
+    public getAllSaveSlots(): any[] {
+        return this.storageManager.getAllSlots();
+    }
+
+    /**
+     * 删除存档
+     */
+    public async deleteSave(slotId: string): Promise<boolean> {
+        return await this.storageManager.deleteSlot(slotId);
+    }
+
+    /**
+     * 导出存档
+     */
+    public exportSave(slotId: string): string | null {
+        return this.storageManager.exportSave(slotId);
+    }
+
+    /**
+     * 导入存档
+     */
+    public importSave(slotId: string, importData: string): boolean {
+        return this.storageManager.importSave(slotId, importData);
     }
 
     /**
@@ -620,6 +727,10 @@ export class GameManager {
 
     public getStorySystem(): StorySystem {
         return this.storySystem;
+    }
+
+    public getStorageManager(): StorageManager {
+        return this.storageManager;
     }
 
     /**

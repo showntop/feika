@@ -9,6 +9,8 @@ import { ResourcePanel } from './components/ResourcePanel';
 import { GameBoard } from './components/GameBoard';
 import { StoryDialog } from './components/StoryDialog';
 import { OrderPanel } from './components/OrderPanel';
+import { NotificationManager } from './components/NotificationManager';
+import { SaveLoadPanel } from './components/SaveLoadPanel';
 import { ErrorHandler } from '../utils/ErrorHandler';
 import { PerformanceMonitor } from '../utils/PerformanceMonitor';
 
@@ -37,6 +39,8 @@ export class UIManager {
     private gameBoard!: GameBoard;
     private storyDialog!: StoryDialog;
     private orderPanel!: OrderPanel;
+    private notificationManager!: NotificationManager;
+    private saveLoadPanel!: SaveLoadPanel;
 
     // 状态管理
     private isInitialized: boolean = false;
@@ -76,6 +80,8 @@ export class UIManager {
         this.gameBoard = new GameBoard();
         this.storyDialog = new StoryDialog();
         this.orderPanel = new OrderPanel();
+        this.notificationManager = NotificationManager.getInstance();
+        this.saveLoadPanel = SaveLoadPanel.getInstance();
 
         console.log('[UIManager] UI组件初始化完成');
     }
@@ -96,6 +102,7 @@ export class UIManager {
         await this.gameBoard.init();
         await this.storyDialog.init();
         await this.orderPanel.init();
+        await this.saveLoadPanel.init();
 
         // 设置事件监听
         this.setupEventListeners();
@@ -382,6 +389,34 @@ export class UIManager {
                 break;
             // 可以添加其他面板
         }
+    }
+
+    /**
+     * 获取通知管理器
+     */
+    public getNotificationManager(): NotificationManager {
+        return this.notificationManager;
+    }
+
+    /**
+     * 获取保存/加载面板
+     */
+    public getSaveLoadPanel(): SaveLoadPanel {
+        return this.saveLoadPanel;
+    }
+
+    /**
+     * 显示保存面板
+     */
+    public showSavePanel(): void {
+        this.saveLoadPanel.showSavePanel();
+    }
+
+    /**
+     * 显示加载面板
+     */
+    public showLoadPanel(): void {
+        this.saveLoadPanel.showLoadPanel();
     }
 
     /**
