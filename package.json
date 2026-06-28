@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
+    "build:cocos": "tsc -p tsconfig.cocos.json",
     "test": "npm run build && jest",
     "lint": "eslint assets/scripts/**/*.ts",
-    "format": "prettier --write assets/scripts/**/*.ts"
+    "format": "prettier --write assets/scripts/**/*.ts",
+    "cocos:build": "echo 'Use Cocos Creator editor to build the project'",
+    "cocos:preview": "echo 'Use Cocos Creator editor to preview the project'"
   },
   "keywords": [
     "game",

@@ -1,0 +1,47 @@
+{
+  "version": "3.8.0",
+  "name": "time-loop-2010",
+  "uuid": "time-loop-2010-project",
+  "type": "3d",
+  "renderPipeline": "",
+  "physics": "",
+  "scriptingSetup": {
+    "classNameFilter": "",
+    "concreteClassFilter": ""
+  },
+  "buildSettings": {
+    "platforms": {
+      "web-mobile": {
+        "name": "web-mobile",
+        "orientation": {
+          "landscapeLeft": false,
+          "landscapeRight": false,
+          "portrait": true,
+          "upsideDown": false
+        },
+        "title": "重返2010：我的第一桶金"
+      },
+      "wechatgame": {
+        "name": "wechatgame",
+        "orientation": {
+          "landscapeLeft": false,
+          "landscapeRight": false,
+          "portrait": true,
+          "upsideDown": false
+        },
+        "title": "重返2010：我的第一桶金",
+        "appid": "touristappid",
+        "libVersion": "2.34.0"
+      }
+    }
+  },
+  "scripts": [
+    "assets/scripts"
+  ],
+  "scenes": [
+    "assets/scenes/LaunchScene.scene",
+    "assets/scenes/MainGameScene.scene",
+    "assets/scenes/MergeScene.scene"
+  ],
+  "startScene": "assets/scenes/LaunchScene.scene"
+}
