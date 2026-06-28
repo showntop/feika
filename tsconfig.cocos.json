@@ -13,7 +13,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["ES2020", "DOM"],
-    "types": ["./@types"],
     "outDir": "./build-cocos",
     "rootDir": "./assets",
     "declaration": false,

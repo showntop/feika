@@ -10,6 +10,7 @@
     "test": "npm run build && jest",
     "lint": "eslint assets/scripts/**/*.ts",
     "format": "prettier --write assets/scripts/**/*.ts",
+    "validate": "./scripts/validate-project.sh",
     "cocos:build": "echo 'Use Cocos Creator editor to build the project'",
     "cocos:preview": "echo 'Use Cocos Creator editor to preview the project'"
   },
