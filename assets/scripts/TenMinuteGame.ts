@@ -4,6 +4,7 @@ import {
   Component,
   Graphics,
   Label,
+  Layers,
   Node,
   sys,
   UITransform,
@@ -263,14 +264,19 @@ export class TenMinuteGame extends Component {
   }
 
   private buildScene(): void {
-    this.node.removeAllChildren();
     const transform = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
     const canvasSize = transform.contentSize;
     const canvasWidth = canvasSize.width > 0 ? canvasSize.width : DESIGN_WIDTH;
     const canvasHeight = canvasSize.height > 0 ? canvasSize.height : DESIGN_HEIGHT;
     const scale = Math.min(canvasWidth / DESIGN_WIDTH, canvasHeight / DESIGN_HEIGHT);
 
-    this.root = this.createPanel('Root', this.node, 0, 0, DESIGN_WIDTH, DESIGN_HEIGHT, COLORS.bg, COLORS.bg);
+    const oldRoot = this.node.getChildByName('GameRoot');
+    if (oldRoot) {
+      oldRoot.destroy();
+    }
+
+    this.root = this.createPanel('GameRoot', this.node, 0, 0, DESIGN_WIDTH, DESIGN_HEIGHT, COLORS.bg, COLORS.bg);
+    this.root.layer = Layers.Enum.UI_2D;
     this.root.setScale(new Vec3(scale, scale, 1));
 
     this.createHeader();
@@ -301,6 +307,7 @@ export class TenMinuteGame extends Component {
     this.progressBarWidth = 350;
     const progressFill = new Node('ProgressFill');
     progressFill.setParent(progressBack);
+    progressFill.layer = progressBack.layer;
     progressFill.addComponent(UITransform).setContentSize(350, 12);
     this.progressBar = progressFill.addComponent(Graphics);
     this.storyButton = this.createTextButton('StoryButton', panel, 252, -63, 145, 48, '推进剧情', COLORS.green, COLORS.greenDark, COLORS.panel, () => this.completeStory());
@@ -334,6 +341,7 @@ export class TenMinuteGame extends Component {
     this.createTextButton('RefreshOrders', panel, 242, 104, 130, 40, '换一批', COLORS.panelSoft, COLORS.line, COLORS.greenDark, () => this.refreshOrders());
     this.orderListNode = new Node('OrderList');
     this.orderListNode.setParent(panel);
+    this.orderListNode.layer = panel.layer;
     this.orderListNode.setPosition(new Vec3(0, 16, 0));
 
     this.createLabel('UpgradeTitle', panel, -320, -104, 180, 28, '摊位升级', 21, COLORS.ink, 'left');
@@ -661,6 +669,7 @@ export class TenMinuteGame extends Component {
   private createPanel(name: string, parent: Node, x: number, y: number, w: number, h: number, fill: Color, stroke: Color): Node {
     const node = new Node(name);
     node.setParent(parent);
+    node.layer = parent.layer;
     node.setPosition(new Vec3(x, y, 0));
     const transform = node.addComponent(UITransform);
     transform.setContentSize(w, h);
@@ -682,6 +691,7 @@ export class TenMinuteGame extends Component {
   private createLabel(name: string, parent: Node, x: number, y: number, w: number, h: number, text: string, size: number, color: Color, align: 'left' | 'center' | 'right'): Label {
     const node = new Node(name);
     node.setParent(parent);
+    node.layer = parent.layer;
     node.setPosition(new Vec3(x + w / 2, y, 0));
     const transform = node.addComponent(UITransform);
     transform.setContentSize(w, h);
