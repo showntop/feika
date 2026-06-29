@@ -81,6 +81,8 @@ interface ButtonSpec {
 const BOARD_SIZE = 7;
 const GRID_COUNT = BOARD_SIZE * BOARD_SIZE;
 const STORAGE_KEY = 'time_loop_2010_cocos_mvp_v1';
+const DESIGN_WIDTH = 750;
+const DESIGN_HEIGHT = 1334;
 
 const COLORS = {
   bg: new Color(238, 242, 236, 255),
@@ -263,9 +265,13 @@ export class TenMinuteGame extends Component {
   private buildScene(): void {
     this.node.removeAllChildren();
     const transform = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    transform.setContentSize(750, 1334);
+    const canvasSize = transform.contentSize;
+    const canvasWidth = canvasSize.width > 0 ? canvasSize.width : DESIGN_WIDTH;
+    const canvasHeight = canvasSize.height > 0 ? canvasSize.height : DESIGN_HEIGHT;
+    const scale = Math.min(canvasWidth / DESIGN_WIDTH, canvasHeight / DESIGN_HEIGHT);
 
-    this.root = this.createPanel('Root', this.node, 0, 0, 750, 1334, COLORS.bg, COLORS.bg);
+    this.root = this.createPanel('Root', this.node, 0, 0, DESIGN_WIDTH, DESIGN_HEIGHT, COLORS.bg, COLORS.bg);
+    this.root.setScale(new Vec3(scale, scale, 1));
 
     this.createHeader();
     this.createStoryPanel();
