@@ -1,34 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
-    "lib": ["ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "strict": true,
-    "esModuleInterop": true,
+    "experimentalDecorators": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./build",
-    "rootDir": "./assets/scripts",
-    "baseUrl": "./assets/scripts",
-    "paths": {
-      "@core/*": ["core/*"],
-      "@data/*": ["data/*"],
-      "@gameplay/*": ["gameplay/*"],
-      "@ui/*": ["ui/*"],
-      "@models/*": ["models/*"],
-      "@utils/*": ["utils/*"]
-    }
+    "noImplicitOverride": false,
+    "types": []
   },
-  "include": [
-    "assets/scripts/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+  "include": ["assets/scripts/**/*.ts"]
 }

@@ -1,31 +1,10 @@
-# Dependencies
 node_modules/
-
-# Build output
+library/
+local/
+temp/
 build/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
+dist/
 .DS_Store
-Thumbs.db
-
-# Logs
-*.log
 npm-debug.log*
-
-# Temporary files
-*.tmp
-*.temp
-
-# Environment files
-.env
-.env.local
-
-# Test coverage
-coverage/
-
-# Package files
-package-lock.json
+yarn-debug.log*
+yarn-error.log*

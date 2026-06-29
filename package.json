@@ -1,35 +1,14 @@
 {
-  "name": "time-loop-2010",
-  "version": "1.0.0",
-  "description": "重返2010：我的第一桶金 - Cocos Creator游戏项目",
-  "main": "index.js",
+  "name": "time-loop-2010-minigame",
+  "version": "0.1.0",
+  "description": "Cocos Creator + WeChat minigame MVP for 重返2010",
+  "private": true,
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc",
-    "build:cocos": "tsc -p tsconfig.cocos.json",
-    "test": "npm run build && jest",
-    "lint": "eslint assets/scripts/**/*.ts",
-    "format": "prettier --write assets/scripts/**/*.ts",
-    "validate": "./scripts/validate-project.sh",
-    "cocos:build": "echo 'Use Cocos Creator editor to build the project'",
-    "cocos:preview": "echo 'Use Cocos Creator editor to preview the project'"
+    "typecheck": "tsc --noEmit",
+    "cocos": "echo \"Open this folder with Cocos Creator 3.8.x\"",
+    "wechat": "echo \"Build platform: WeChat Mini Game in Cocos Creator\""
   },
-  "keywords": [
-    "game",
-    "cocos",
-    "merge",
-    "business"
-  ],
-  "author": "Feica Team",
-  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
-    "jest": "^29.0.0",
-    "prettier": "^3.0.0",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {}
+  }
 }

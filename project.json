@@ -1,47 +1,37 @@
 {
   "version": "3.8.0",
-  "name": "time-loop-2010",
-  "uuid": "time-loop-2010-project",
-  "type": "3d",
+  "name": "time-loop-2010-minigame",
+  "uuid": "7b1e0322-4f2a-4a41-a010-2010f1c0ffee",
+  "type": "2d",
   "renderPipeline": "",
   "physics": "",
-  "scriptingSetup": {
-    "classNameFilter": "",
-    "concreteClassFilter": ""
-  },
+  "scripts": ["assets/scripts"],
+  "scenes": ["assets/scenes/Main.scene"],
+  "startScene": "assets/scenes/Main.scene",
   "buildSettings": {
     "platforms": {
-      "web-mobile": {
-        "name": "web-mobile",
-        "orientation": {
-          "landscapeLeft": false,
-          "landscapeRight": false,
-          "portrait": true,
-          "upsideDown": false
-        },
-        "title": "重返2010：我的第一桶金"
-      },
       "wechatgame": {
         "name": "wechatgame",
-        "orientation": {
-          "landscapeLeft": false,
-          "landscapeRight": false,
-          "portrait": true,
-          "upsideDown": false
-        },
         "title": "重返2010：我的第一桶金",
         "appid": "touristappid",
-        "libVersion": "2.34.0"
+        "libVersion": "2.34.0",
+        "orientation": {
+          "portrait": true,
+          "landscapeLeft": false,
+          "landscapeRight": false,
+          "upsideDown": false
+        }
+      },
+      "web-mobile": {
+        "name": "web-mobile",
+        "title": "重返2010：我的第一桶金",
+        "orientation": {
+          "portrait": true,
+          "landscapeLeft": false,
+          "landscapeRight": false,
+          "upsideDown": false
+        }
       }
     }
-  },
-  "scripts": [
-    "assets/scripts"
-  ],
-  "scenes": [
-    "assets/scenes/LaunchScene.scene",
-    "assets/scenes/MainGameScene.scene",
-    "assets/scenes/MergeScene.scene"
-  ],
-  "startScene": "assets/scenes/LaunchScene.scene"
+  }
 }

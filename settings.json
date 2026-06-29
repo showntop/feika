@@ -2,46 +2,15 @@
   "scripts": ["assets/scripts"],
   "skip-scene": false,
   "preview-port": 7456,
-  "build-start-language": "",
   "build-path": "build",
   "excluded-modules": [],
-  "custom-build": {
-    "generate-native-binds": false,
-    "encrypt-code": false
-  },
-  "last-build-platform": "",
-  "last-build-options": {},
-  "assets": {
-    "defaultType": "",
-    "library": ".library"
-  },
-  "scripting": {
-    "class-filter": "",
-    "concrete-class-filter": ""
-  },
-  "cocos-services": {
-    "analytics": [],
-    "sdkbox": []
-  },
-  "android": {
-    "packageName": "org.cocos2d.time-loop-2010"
-  },
-  "ios": {
-    "packageName": "org.cocos2d.time-loop-2010"
-  },
-  "mac": {
-    "packageName": "org.cocos2d.time-loop-2010"
-  },
-  "web": {
-    "packageName": "org.cocos2d.time-loop-2010"
-  },
   "wechatgame": {
     "appid": "touristappid",
     "libVersion": "2.34.0",
     "orientation": {
+      "portrait": true,
       "landscapeLeft": false,
       "landscapeRight": false,
-      "portrait": true,
       "upsideDown": false
     }
   }
