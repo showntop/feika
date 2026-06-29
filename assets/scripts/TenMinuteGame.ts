@@ -293,7 +293,10 @@ export class TenMinuteGame extends Component {
     this.goalLabel = this.createLabel('Goal', panel, -170, -65, 470, 30, '', 17, COLORS.muted, 'left');
     const progressBack = this.createPanel('ProgressBack', panel, 85, -98, 350, 12, new Color(220, 227, 220, 255), new Color(220, 227, 220, 255));
     this.progressBarWidth = 350;
-    this.progressBar = progressBack.addComponent(Graphics);
+    const progressFill = new Node('ProgressFill');
+    progressFill.setParent(progressBack);
+    progressFill.addComponent(UITransform).setContentSize(350, 12);
+    this.progressBar = progressFill.addComponent(Graphics);
     this.storyButton = this.createTextButton('StoryButton', panel, 252, -63, 145, 48, '推进剧情', COLORS.green, COLORS.greenDark, COLORS.panel, () => this.completeStory());
   }
 
