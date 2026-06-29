@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.SceneAsset",
-    "_name": "LaunchScene",
+    "_name": "TestGameScene",
     "_objFlags": 0,
     "_native": "",
     "scene": {
@@ -25,7 +25,7 @@
     "_globals": {
       "__id__": 4
     },
-    "_id": "533bc79f-6d34-43aa-aeb3-7141964ba208"
+    "_id": "21dbea21-0c1b-4f72-ba5b-55bc1202e6e8"
   },
   {
     "__type__": "cc.Node",
